@@ -1,0 +1,10 @@
+# sbt specific
+target/
+src_managed/
+
+# IntelliJ project files
+.idea
+
+# Test files
+*.in
+*.out
