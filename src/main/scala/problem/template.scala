@@ -1,4 +1,3 @@
-import scala.math._
 import scala.io.StdIn
 
 Iterator.continually(StdIn.readLine)
