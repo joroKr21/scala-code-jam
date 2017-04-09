@@ -1,21 +1,28 @@
+package _2016.a2
+
 import scala.Ordering.Implicits._
-import scala.io.StdIn
+import scala.io.Source
 import scala.util.control.Breaks._
 
-object D {
-  def unapply(c: Char): Option[Int] =
-    if (c.isDigit) Some(c.asDigit) else None
-}
+import java.io.FileOutputStream
 
-Iterator.continually(StdIn.readLine)
-  .drop(1).takeWhile(_ != null)
-  .map(_ split ' ').zipWithIndex
-  .foreach { case (Array(coders, jammers), t) =>
-    val n = coders.length
-    var (exp, diff) = (1l, 0l)
-    val memo @ Seq(cmin, cmid, cmax, jmin, jmid, jmax) =
+object CloseMatch extends App {
+  object D {
+    def unapply(c: Char): Option[Int] =
+      if (c.isDigit) Some(c.asDigit) else None
+  }
+
+  val Array(in, out) = for (f <- args) yield s"src/main/resources/$f"
+  val input =  Source.fromFile(in).getLines().drop(1)
+    .takeWhile(_ != null).map(_ split ' ').zipWithIndex
+
+  Console.withOut(new FileOutputStream(out))(for {
+    (Array(coders, jammers), t) <- input
+    (n, t1) = (coders.length, t + 1)
+    memo @ Seq(cmin, cmid, cmax, jmin, jmid, jmax) =
       for (_ <- 1 to 6) yield Array.fill(n + 1)(0l)
-
+  } {
+    var (exp, diff) = (1l, 0l)
     for (i <- n - 1 to 0 by -1) {
       def update(deltas: Int*) =
         for ((xs, d) <- memo zip deltas)
@@ -38,10 +45,13 @@ Iterator.continually(StdIn.readLine)
 
     var score = (diff.abs, cmid.head, jmid.head)
     if (diff != 0) breakable {
-      for (i <- 0 until n; k = i + 1) {
-        exp /= 10
-        val csofar = cmid.head - cmid(i)
-        val jsofar = jmid.head - jmid(i)
+      for {
+        i <- 0 until n
+        k = i + 1
+        _ = exp /= 10
+        csofar = cmid.head - cmid(i)
+        jsofar = jmid.head - jmid(i)
+      } {
         def update(deltas: Int*) = {
           val Seq(c1, j1, c2, j2, d1, d2) = deltas
           val diff1 = (d1 * exp + jmin(k) - cmax(k)).abs
@@ -72,5 +82,10 @@ Iterator.continually(StdIn.readLine)
     }
 
     val (_, cs, js) = score
-    println(s"Case #${t + 1}: %0${n}d %0${n}d".format(cs, js))
-  }
+    val answer = for {
+      score <- Seq(cs, js)
+      display = score.toString
+    } yield "0" * (n - display.length) + display
+    println(s"Case #$t1: ${answer.mkString(" ")}")
+  })
+}
