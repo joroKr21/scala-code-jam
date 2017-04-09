@@ -1,4 +1,4 @@
-package _2015.qual
+package _2015.a0
 
 import scala.collection.immutable.TreeMap
 import scala.io.Source

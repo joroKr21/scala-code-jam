@@ -1,7 +1,5 @@
 name := "scala-code-jam"
 
-version := "1.0"
+version := "2017.a.0"
 
-scalaVersion in ThisBuild := "2.11.8"
-
-libraryDependencies += "org.choco-solver" % "choco-solver" % "4.0.1"
+scalaVersion in ThisBuild := "2.12.0"

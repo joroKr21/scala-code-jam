@@ -1,4 +1,4 @@
-package _2010.qual
+package _2010.a0
 
 import scala.io.Source
 
