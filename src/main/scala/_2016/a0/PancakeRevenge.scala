@@ -12,9 +12,6 @@ object PancakeRevenge extends App {
     (stack, t) <- input
     flips = stack.iterator.sliding(2).count {
       p => p.head != p.last
-    } + truth(stack.last == '-')
+    } + (stack.last == '-').compare(false)
   } println(s"Case #${t + 1}: $flips"))
-
-  def truth(p: Boolean) =
-    p compare false
 }
