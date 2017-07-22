@@ -9,8 +9,8 @@ object Template extends App {
   val input = Source.fromFile(in).getLines().drop(1).takeWhile(_ != null).zipWithIndex
 
   Console.withOut(new FileOutputStream(out)) {
-    for ((line, t) <- input) {
-      println(s"Case #${t + 1}: $line")
+    for ((line, test) <- input) {
+      println(s"Case #${test + 1}: $line")
     }
   }
 }
